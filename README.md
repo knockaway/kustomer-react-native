@@ -8,6 +8,12 @@ react-native wrapper for the native Kustomer SDKs
 npm install kustomer-react-native
 ```
 
+### iOS Setup
+TBA
+
+### Android Setup
+TBA
+
 ## Usage
 
 ```js
@@ -15,7 +21,6 @@ import KustomerReactNative from "kustomer-react-native";
 
 // ...
 
-const result = await KustomerReactNative.multiply(3, 7);
 ```
 
 ## Contributing

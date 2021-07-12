@@ -27,9 +27,9 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepare": "bob build",
     "release": "release-it",
-    "example": "yarn --cwd example",
-    "pods": "cd example && pod-install --quiet",
-    "bootstrap": "yarn example && yarn && yarn pods"
+    "install:example": "cd example && npm install",
+    "pods": "cd example/ios && pod install --silent",
+    "bootstrap": "npm install && npm run install:example && npm run pods"
   },
   "keywords": [
     "react-native",
@@ -59,10 +59,9 @@
     "eslint-plugin-prettier": "^3.1.3",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
-    "pod-install": "^0.1.0",
     "prettier": "^2.0.5",
-    "react": "16.13.1",
-    "react-native": "0.63.4",
+    "react": "17.0.1",
+    "react-native": "0.64.2",
     "react-native-builder-bob": "^0.18.1",
     "release-it": "^14.2.2",
     "typescript": "^4.1.3"
@@ -81,7 +80,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "yarn lint && yarn typescript"
+      "pre-commit": "npm run lint"
     }
   },
   "commitlint": {
