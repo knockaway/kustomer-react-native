@@ -23,6 +23,6 @@ KustomerReactNative.show = (option?: KustomerDisplayMode) => {
   if (!option) {
     return KustomerReactNative._show('default');
   }
-  KustomerReactNative._show(option);
+  return KustomerReactNative._show(option);
 };
 export default KustomerReactNative as KustomerReactNativeType;
