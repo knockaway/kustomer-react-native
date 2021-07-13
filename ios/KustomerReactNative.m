@@ -1,19 +1,11 @@
-#import "KustomerReactNative.h"
+#import <React/RCTBridgeModule.h>
 
-@implementation KustomerReactNative
+@interface RCT_EXTERN_MODULE(KustomerReactNative, NSObject)
 
-RCT_EXPORT_MODULE()
-
-// Example method
-// See // https://reactnative.dev/docs/native-modules-ios
-RCT_REMAP_METHOD(multiply,
-                 multiplyWithA:(nonnull NSNumber*)a withB:(nonnull NSNumber*)b
-                 withResolver:(RCTPromiseResolveBlock)resolve
-                 withRejecter:(RCTPromiseRejectBlock)reject)
-{
-  NSNumber *result = @([a floatValue] * [b floatValue]);
-
-  resolve(result);
++ (BOOL) requiresMainQueueSetup {
+  return YES;
 }
+
+RCT_EXTERN_METHOD(_show:withOption(NSString *)option)
 
 @end

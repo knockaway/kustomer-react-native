@@ -1,18 +1,24 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import KustomerReactNative from 'kustomer-react-native';
 
 export default function App() {
-  const [result, setResult] = React.useState();
-
-  React.useEffect(() => {
-    KustomerReactNative.multiply(3, 7).then(setResult);
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Testing Kustomer:</Text>
+      <Button
+        title="Open Kustomer Chat"
+        onPress={() => {
+          KustomerReactNative.show();
+        }}
+      />
+      <Button
+        title="Open Kustomer Knowledgebase"
+        onPress={() => {
+          KustomerReactNative.show('knowledgeBase');
+        }}
+      />
     </View>
   );
 }
