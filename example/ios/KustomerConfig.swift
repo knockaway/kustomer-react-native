@@ -20,11 +20,11 @@ import UIKit
     // customize your Options here
     // reference for Kustomer Options - https://developer.kustomer.com/chat-sdk/v2-iOS/docs/configuration#kustomeroptions-class-reference
     let options = KustomerOptions()
-    options.language = .fr
-    options.businessScheduleId = "1234"
-    options.hideNewConversationButtonInClosedChat = true
+    //    options.language = .fr
+    // options.businessScheduleId = "123"
+    // options.hideNewConversationButtonInClosedChat = true
 
-    let apiKey = "<api key>"
+    let apiKey = "<api_key>"
     
     _ = Kustomer.configure(apiKey: apiKey, options: options, launchOptions: launchOptions as? [UIApplication.LaunchOptionsKey : Any])
   }
