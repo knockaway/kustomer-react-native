@@ -4,17 +4,21 @@ import { StyleSheet, View, Text, Button } from 'react-native';
 import KustomerReactNative from 'kustomer-react-native';
 
 export default function App() {
+  const [isChatAvailable, setIsChatAvailable] = React.useState(false);
+
   React.useEffect(() => {
-    const isAvailable = async () => {
-      const [data, error] = await KustomerReactNative.isChatAvailable();
-      console.log({ data, error });
+    const isAvailableAsync = async () => {
+      const [isAvailable, error] = await KustomerReactNative.isChatAvailable();
+      console.log({ isAvailable, error });
+      setIsChatAvailable(isAvailable);
     };
 
-    isAvailable();
+    isAvailableAsync();
   }, []);
+
   return (
     <View style={styles.container}>
-      <Text>Testing Kustomer:</Text>
+      <Text>{`Chat Available: ${isChatAvailable}`}</Text>
       <Button
         title="Open Kustomer Chat"
         onPress={() => {
