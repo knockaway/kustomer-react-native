@@ -21,7 +21,7 @@ type KustomerReactNativeType = {
    *
    * iOS only: 'newChat' | 'activeChat' | 'chatHistory' | 'knowledgeBase' - https://developer.kustomer.com/chat-sdk/v2-iOS/docs/open-chat-ui
    *
-   * Android only: 'chatKB' - https://developer.kustomer.com/chat-sdk/v2-Android/docs/open-chat-ui
+   * Android only: 'chatAndKnowledgeBase' - https://developer.kustomer.com/chat-sdk/v2-Android/docs/open-chat-ui
    */
   show(option?: KustomerDisplayMode): void;
 };
