@@ -1,22 +1,11 @@
 import { NativeModules } from 'react-native';
+import type { KustomerDisplayMode, PromiseResult } from './types';
 
-declare type KustomerDisplayModeiOS =
-  | 'newChat'
-  | 'activeChat'
-  | 'chatHistory'
-  | 'knowledgeBase';
-
-declare type KustomerDisplayModeAndroid = 'chatAndKnowledgeBase';
-
-export declare type KustomerDisplayMode =
-  | KustomerDisplayModeiOS
-  | KustomerDisplayModeAndroid
-  | 'onlyChat'
-  | 'onlyKnowledgeBase'
-  | 'default';
-
-type KustomerReactNativeType = {
+interface KustomerReactNativeType {
   /**
+   * Opens Kustomer Chat UI
+   *
+   * @remarks
    * Both: 'onlyChat'| 'onlyKnowledgeBase'| 'default'
    *
    * iOS only: 'newChat' | 'activeChat' | 'chatHistory' | 'knowledgeBase' - https://developer.kustomer.com/chat-sdk/v2-iOS/docs/open-chat-ui
@@ -24,7 +13,13 @@ type KustomerReactNativeType = {
    * Android only: 'chatAndKnowledgeBase' - https://developer.kustomer.com/chat-sdk/v2-Android/docs/open-chat-ui
    */
   show(option?: KustomerDisplayMode): void;
-};
+  /**
+   * Checks if Chat is available
+   *
+   * @returns {PromiseResult<Boolean>} Array of 2 items [data, error] where the first index is the result and second index is any error coming from the native side
+   */
+  isChatAvailable(): Promise<PromiseResult<Boolean>>;
+}
 
 const { KustomerReactNative } = NativeModules;
 
