@@ -9,13 +9,27 @@ react-native wrapper for the native Kustomer SDKs V2
   * Modify `KustomerConfig.swift` and replace add in your Kustomer API key in place of `<api key>`
 * run `npm run ios` or `npm run android`
 
+## Requirements
+- React-Native 0.60+ with Autolinking
+- iOS: Minimum build target version of iOS 11
+- Xcode: Xcode 12
+
 ## Installation
 
 ```sh
 npm install kustomer-react-native
 ```
 
+Add the following to your `package.json` dependencies
+```json
+"kustomer-react-native": "git+https://github.com/knockaway/kustomer-react-native.git#master",
+```
 ### iOS Setup
+#### Cocoapods
+You can optionally add the following to your `Podfile` with a specific version 2.x.x:
+`pod 'Kustomer', :git => 'https://github.com/kustomer/customer-ios.git', :tag => '2.4.3'`
+
+Otherwise it will default to install SDK version `2.4.3`
 #### Objective-C
 * Your react-native project is most likely in `Objective-C` in which case we will need to setup a translation layer from Swift to Objective-C for initializing the SDK
 * Create the following swift file inside your iOS xcode project
@@ -51,7 +65,9 @@ import UIKit
 ```
 
 * You can then call this `configure` method inside `AppDelegate.m`
-```swift
+```objective-c
+#import "YourAppName-Swift.h"
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   // ... other stuff

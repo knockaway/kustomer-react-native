@@ -15,20 +15,19 @@ export default function App() {
 
     isAvailableAsync();
   }, []);
-
   return (
     <View style={styles.container}>
       <Text>{`Chat Available: ${isChatAvailable}`}</Text>
       <Button
         title="Open Kustomer Chat"
         onPress={() => {
-          KustomerReactNative.show();
+          KustomerReactNative.show('onlyChat');
         }}
       />
       <Button
         title="Open Kustomer Knowledgebase"
         onPress={() => {
-          KustomerReactNative.show('knowledgeBase');
+          KustomerReactNative.show('onlyKnowledgeBase');
         }}
       />
     </View>
