@@ -1,6 +1,7 @@
 {
-  "name": "kustomer-react-native",
+  "name": "@knockaway/kustomer-react-native",
   "version": "0.1.0",
+  "private": true,
   "description": "react-native wrapper for the native Kustomer SDKs",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

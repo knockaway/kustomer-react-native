@@ -48,11 +48,13 @@ repositories {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
         url("$rootDir/../node_modules/react-native/android")
     }
+    mavenCentral()
     google()
     jcenter()
 }
 
 dependencies {
     //noinspection GradleDynamicVersion
+    implementation 'com.kustomer.chat:ui:2.7.1'
     implementation "com.facebook.react:react-native:+"  // From node_modules
 }
