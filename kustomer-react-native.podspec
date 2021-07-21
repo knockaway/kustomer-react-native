@@ -3,6 +3,7 @@ require "json"
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
 Pod::Spec.new do |s|
+  s.module_name  = "KustomerReactNative"
   s.name         = "kustomer-react-native"
   s.version      = package["version"]
   s.summary      = package["description"]
@@ -13,9 +14,9 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => "11.0" }
   s.source       = { :git => "https://github.com/knockaway/kustomer-react-native.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm}"
+  s.source_files = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency 'React'
-  s.dependency 'KustomerChat', '~> 2.4.3'
+  s.dependency 'KustomerChat', '~> 2.4.4'
 
 end

@@ -1,18 +1,35 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import KustomerReactNative from 'kustomer-react-native';
 
 export default function App() {
-  const [result, setResult] = React.useState();
+  const [isChatAvailable, setIsChatAvailable] = React.useState(false);
 
   React.useEffect(() => {
-    KustomerReactNative.multiply(3, 7).then(setResult);
-  }, []);
+    const isAvailableAsync = async () => {
+      const [isAvailable, error] = await KustomerReactNative.isChatAvailable();
+      console.log({ isAvailable, error });
+      setIsChatAvailable(isAvailable);
+    };
 
+    isAvailableAsync();
+  }, []);
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>{`Chat Available: ${isChatAvailable}`}</Text>
+      <Button
+        title="Open Kustomer Chat"
+        onPress={() => {
+          KustomerReactNative.show('onlyChat');
+        }}
+      />
+      <Button
+        title="Open Kustomer Knowledgebase"
+        onPress={() => {
+          KustomerReactNative.show('onlyKnowledgeBase');
+        }}
+      />
     </View>
   );
 }
