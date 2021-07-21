@@ -29,15 +29,6 @@ Add the following to your `package.json` dependencies
 "kustomer-react-native": "git+https://github.com/knockaway/kustomer-react-native.git#master",
 ```
 
-### iOS Setup
-
-#### Cocoapods
-
-You can optionally add the following to your `Podfile` with a specific version 2.x.x:
-`pod 'Kustomer', :git => 'https://github.com/kustomer/customer-ios.git', :tag => '2.4.3'`
-
-Otherwise it will default to install SDK version `2.4.3`
-
 ### Android Setup
 
 #### Gradle Setup
