@@ -19,7 +19,7 @@ react-native wrapper for the native Kustomer SDKs V2
 ## Installation
 
 ```sh
-npm install kustomer-react-native
+npm install @knockaway/kustomer-react-native
 ```
 
 OR
@@ -60,7 +60,7 @@ _NOTE: Kustomer's V2 SDK is written in Kotlin._
 #### Cocoapods
 
 You can optionally add the following to your `Podfile` with a specific version 2.x.x:
-`pod 'Kustomer', :git => 'https://github.com/kustomer/customer-ios.git', :tag => '2.4.3'`
+`pod 'Kustomer', :git => 'https://github.com/kustomer/kustomer-ios.git', :tag => '2.4.3'`
 
 Otherwise it will default to install SDK version `2.4.3`
 
@@ -117,18 +117,30 @@ import UIKit
 
 - If your react-native project is somehow in `Swift`, you can follow the [Kustomer guide](https://developer.kustomer.com/chat-sdk/v2-iOS/docs/configuration#kustomeroptions-class-reference) for initializing the SDK
 
-### Android Setup
-
-TBA
-
 ## Usage
 
 ```js
-import KustomerReactNative from 'kustomer-react-native';
+import KustomerReactNative from '@knockaway/kustomer-react-native';
 
 // ...
 ```
 
+## Push Notification
+### iOS
+* Update your `KustomerConfig.swift` file with the following
+```swift
+@objc func didRegisterForRemoteNotifications(deviceToken: Data) {
+  Kustomer.didRegisterForRemoteNotifications(deviceToken: deviceToken)
+}
+  
+@objc func didFailToRegisterForRemoteNotifications(error: Error) {
+  Kustomer.didFailToRegisterForRemoteNotifications(error: error)
+}
+```
+- Following the guide [here](https://developer.kustomer.com/chat-sdk/v2-iOS/docs/push-notifications)
+ 
+
+### Android
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
