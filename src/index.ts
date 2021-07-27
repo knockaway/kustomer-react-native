@@ -5,13 +5,19 @@ import type { KustomerReactNativeInterface } from './interface';
 const { KustomerReactNative } = NativeModules;
 const KustomerEventEmitter = new NativeEventEmitter(KustomerReactNative);
 const _eventHandlers = new Map();
-const ON_UNREAD_COUNT_CHANGE = 'onUnreadCountChange';
+// event names used to bridge events from native to JS
+const SUPPORTED_EVENT_NAMES: { [key: string]: KustomerChatListenerTypes } = {
+  ON_UNREAD_COUNT_CHANGE: 'onUnreadCountChange',
+};
+
+const isValidEventType = (type: KustomerChatListenerTypes) =>
+  Object.values(SUPPORTED_EVENT_NAMES).find((value) => type === value);
 
 const addEventListener = (
   type: KustomerChatListenerTypes,
   handler: Function
 ) => {
-  if (type !== 'onUnreadCountChange') {
+  if (!isValidEventType(type)) {
     console.warn(
       'KustomerReactNative only supports `onUnreadCountChange` events'
     );
@@ -19,9 +25,9 @@ const addEventListener = (
   }
   let listener;
 
-  if (type === 'onUnreadCountChange') {
+  if (type === SUPPORTED_EVENT_NAMES.ON_UNREAD_COUNT_CHANGE) {
     listener = KustomerEventEmitter.addListener(
-      ON_UNREAD_COUNT_CHANGE,
+      SUPPORTED_EVENT_NAMES.ON_UNREAD_COUNT_CHANGE,
       (count) => {
         handler(count);
       }
@@ -32,7 +38,7 @@ const addEventListener = (
 KustomerReactNative.addEventListener = addEventListener;
 
 const removeEventListener = (type: KustomerChatListenerTypes) => {
-  if (type !== 'onUnreadCountChange') {
+  if (!isValidEventType(type)) {
     console.warn(
       'KustomerReactNative only supports `onUnreadCountChange` events'
     );
