@@ -129,6 +129,7 @@ KustomerReactNative.show();
 ## Methods
 ### show()
 `KustomerReactNative.show()`
+<br />
 Opens Kustomer Chat UI
 
 **Parameters:**
@@ -153,6 +154,7 @@ Possible option string:
 
 ### isChatAvailable()
 `KustomerReactNative.isChatAvailable()`
+<br />
 Checks if Chat is available.
 **Returns:**
 Returns an array with `success` and `error` item: `[Boolean, String | Object]`
@@ -169,6 +171,7 @@ if (error) {
 
 ### getUnreadCount()
 `KustomerReactNative.getUnreadCount(callback)`
+<br />
 get the most recent count of unread messages from the Kustomer servers as an Int.
 
 **Parameters:**
@@ -186,6 +189,7 @@ KustomerReactNative.getUnreadCount((count) => {
 
 ### addEventListener()
 `KustomerReactNative.addEventListener(type, handler)`
+<br />
 Attaches a listener to certain native Kustomer events
 
 **Parameters:**
@@ -199,10 +203,21 @@ Supported values:
 * type: `onUnreadCountChange`
   * handler: Function which receive a Number
 
+**Example:**
+```js
+KustomerReactNative.addEventListener('onUnreadCountChange', (count) => {
+  console.log({count})
+});
+```
 ### removeEventListener()
 `KustomerReactNative.removeEventListener(type)`
+<br />
 Removes the event listener. Do this in `componentWillUnmount` to prevent memory leaks.
 
+**Example:**
+```JS
+KustomerReactNative.removeEventListener('onUnreadCountChange');
+```
 
 ## Push Notification
 ### iOS
