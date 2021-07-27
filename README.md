@@ -117,13 +117,92 @@ import UIKit
 
 - If your react-native project is somehow in `Swift`, you can follow the [Kustomer guide](https://developer.kustomer.com/chat-sdk/v2-iOS/docs/configuration#kustomeroptions-class-reference) for initializing the SDK
 
-## Usage
+# Usage
 
 ```js
 import KustomerReactNative from '@knockaway/kustomer-react-native';
 
-// ...
+// open the Kustomer default chat
+KustomerReactNative.show();
 ```
+
+## Methods
+### show()
+`KustomerReactNative.show()`
+Opens Kustomer Chat UI
+
+**Parameters:**
+
+| Name     | Type     | Required | Description                                                 |
+| -------- | -------- | -------- | ----------------------------------------------------------- |
+| option   | String   | No       | See below                                                   |
+
+Possible option string:
+* `default` (default)
+* `onlyChat`
+* `onlyKnowledgeBase`
+
+#### iOS Only
+* `newChat` 
+* `activeChat` 
+* `chatHistory` 
+* `knowledgeBase`
+
+#### Android only
+* `chatAndKnowledgeBase`
+
+### isChatAvailable()
+`KustomerReactNative.isChatAvailable()`
+Checks if Chat is available.
+**Returns:**
+Returns an array with `success` and `error` item: `[Boolean, String | Object]`
+
+**Example:**
+```JS
+const [isAvailable, error] = await KustomerReactNative.isChatAvailable();
+if (error) {
+  // do something with error
+} else {
+  console.log({isAvailable})
+}
+```
+
+### getUnreadCount()
+`KustomerReactNative.getUnreadCount(callback)`
+get the most recent count of unread messages from the Kustomer servers as an Int.
+
+**Parameters:**
+
+| Name     | Type     | Required | Description                                                 |
+| -------- | -------- | -------- | ----------------------------------------------------------- |
+| callback | function | Yes      | Function which receive a Number                             |
+
+**Example:**
+```JS
+KustomerReactNative.getUnreadCount((count) => {
+  console.log({count})
+});
+```
+
+### addEventListener()
+`KustomerReactNative.addEventListener(type, handler)`
+Attaches a listener to certain native Kustomer events
+
+**Parameters:**
+
+| Name     | Type     | Required | Description                                                 |
+| -------- | -------- | -------- | ----------------------------------------------------------- |
+| type     | string   | Yes      | See below                                                   |
+| handler  | function | Yes      | See below                                                   |
+
+Supported values: 
+* type: `onUnreadCountChange`
+  * handler: Function which receive a Number
+
+### removeEventListener()
+`KustomerReactNative.removeEventListener(type)`
+Removes the event listener. Do this in `componentWillUnmount` to prevent memory leaks.
+
 
 ## Push Notification
 ### iOS
