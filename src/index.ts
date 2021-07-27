@@ -9,6 +9,7 @@ const _eventHandlers = new Map();
 const SUPPORTED_EVENT_NAMES: { [key: string]: KustomerChatListenerTypes } = {
   ON_UNREAD_COUNT_CHANGE: 'onUnreadCountChange',
 };
+const supportedEventsArray = Object.values(SUPPORTED_EVENT_NAMES);
 
 const isValidEventType = (type: KustomerChatListenerTypes) =>
   Object.values(SUPPORTED_EVENT_NAMES).find((value) => type === value);
@@ -19,7 +20,9 @@ const addEventListener = (
 ) => {
   if (!isValidEventType(type)) {
     console.warn(
-      'KustomerReactNative only supports `onUnreadCountChange` events'
+      `KustomerReactNative only supports events: ${supportedEventsArray.join(
+        ', '
+      )}`
     );
     return;
   }
@@ -40,7 +43,9 @@ KustomerReactNative.addEventListener = addEventListener;
 const removeEventListener = (type: KustomerChatListenerTypes) => {
   if (!isValidEventType(type)) {
     console.warn(
-      'KustomerReactNative only supports `onUnreadCountChange` events'
+      `KustomerReactNative only supports events: ${supportedEventsArray.join(
+        ', '
+      )}`
     );
     return;
   }
@@ -49,6 +54,7 @@ const removeEventListener = (type: KustomerChatListenerTypes) => {
   if (!listener) {
     return;
   }
+  // remove from nativeEventEmitter
   listener.remove();
   _eventHandlers.delete(type);
 };
