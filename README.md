@@ -205,14 +205,14 @@ Supported values:
 
 **Example:**
 ```js
-KustomerReactNative.addEventListener('onUnreadCountChange', (count) => {
+const listener = KustomerReactNative.addEventListener('onUnreadCountChange', (count) => {
   console.log({count})
 });
 ```
-### removeEventListener()
-`KustomerReactNative.removeEventListener(type)`
-<br />
-Removes the event listener. Do this in `componentWillUnmount` to prevent memory leaks.
+**IMPORTANT:**
+call `.remove()` on the listener object on cleanup to prevent memory leaks.
+
+`listener.remove()`
 
 **Example:**
 ```JS
