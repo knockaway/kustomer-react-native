@@ -54,17 +54,18 @@ const useListenerExamples = () => {
 
   React.useEffect(() => {
     // actively listens to unread count changes
-    KustomerReactNative.addEventListener('onUnreadCountChange', (count) => {
-      setUnreadCount(count);
-    });
-
+    const unreadCountListener = KustomerReactNative.addEventListener(
+      'onUnreadCountChange',
+      (count) => {
+        setUnreadCount(count);
+      }
+    );
     // gets the current count of unread messages once on init
     KustomerReactNative.getUnreadCount((count) => {
       setUnreadCount(count);
     });
-
     return () => {
-      KustomerReactNative.removeEventListener('onUnreadCountChange');
+      unreadCountListener.remove();
     };
   }, []);
 

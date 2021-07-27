@@ -1,3 +1,4 @@
+import type { EmitterSubscription } from 'react-native';
 import type {
   KustomerDisplayMode,
   PromiseResult,
@@ -31,14 +32,18 @@ export interface KustomerReactNativeInterface {
   /**
    * Attaches a listener to native Kustomer events
    * iOS ref: https://developer.kustomer.com/chat-sdk/v2-iOS/docs/api-protocols-kuschatlistener
+   *
+   * IMPORTANT: Be sure to remove subscription on cleanup
+   * @example
+   * const unreadCountListener = KustomerReactNative.addEventListener('onUnreadCountChange', handler);
+   * unreadCountListener.remove() // call this on cleanup
    * @param {KustomerChatListenerTypes} type
    * @param {Function} handler
+   *
+   * @returns {EmitterSubscription}
    */
-  addEventListener(type: KustomerChatListenerTypes, handler: Function): void;
-
-  /**
-   * Removes the event listener. Do this in `componentWillUnmount` to prevent memory leaks.
-   * @param {KustomerChatListenerTypes} type
-   */
-  removeEventListener(type: KustomerChatListenerTypes): void;
+  addEventListener(
+    type: KustomerChatListenerTypes,
+    handler: Function
+  ): EmitterSubscription | null;
 }
