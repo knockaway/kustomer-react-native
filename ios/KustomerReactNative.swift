@@ -34,6 +34,7 @@ public class KustomerReactNative: RCTEventEmitter {
     public override func supportedEvents() -> [String]! {
         return ["onUnreadCountChange"]
     }
+
     @objc func handleOnUnreadCountChange(_ notification: NSNotification) {
         // safe unwrap userInfo object
         if let count = notification.userInfo?["count"] as? Int {
