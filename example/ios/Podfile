@@ -9,6 +9,7 @@ target 'KustomerReactNativeExample' do
   use_react_native!(:path => config["reactNativePath"])
 
   # pod 'kustomer-react-native', :path => '../..'
+  pod 'KustomerChat', :git => 'https://github.com/kustomer/kustomer-ios.git', :tag => '2.4.4'
 
   # Enables Flipper.
   #

@@ -1,7 +1,49 @@
 
 import KustomerChat
+import Foundation
+
+let RCTKustomerOnUnreadCountChange = "KustomerOnUnreadCountChange"
+
 @objc(KustomerReactNative)
-public class KustomerReactNative: NSObject {
+public class KustomerReactNative: RCTEventEmitter {
+    private var chatListenerUid: String?
+    // MARK: Overrides for RCTEventEmitter methods
+    
+    /**
+     *  method will be called when the first observer is added
+     */
+    public override func startObserving() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleOnUnreadCountChange), name: Notification.Name(rawValue: RCTKustomerOnUnreadCountChange), object: nil)
+        
+        let listener = MyListener()
+        chatListenerUid = Kustomer.chatProvider.addChatListener(listener)
+        
+    }
+    
+    /**
+     * method will be called when the last observer is removed
+     */
+    public override func stopObserving() {
+        if (chatListenerUid != nil) {
+            Kustomer.chatProvider.removeChatListener(chatListenerUid!)
+        }
+    }
+    /**
+     * Valid event names on the JS side
+     */
+    public override func supportedEvents() -> [String]! {
+        return ["onUnreadCountChange"]
+    }
+
+    @objc func handleOnUnreadCountChange(_ notification: NSNotification) {
+        // safe unwrap userInfo object
+        if let count = notification.userInfo?["count"] as? Int {
+            // send event to react native JS
+            self.sendEvent(withName: "onUnreadCountChange", body: count)
+        }
+    }
+    
+    // MARK: Exposed Kustomer Methods
     /**
     - parameters:
         - option: string value for Kustomer preferredView
@@ -57,6 +99,16 @@ public class KustomerReactNative: NSObject {
         }
     }
     
+    @objc(getUnreadCount:)
+    func getUnreadCount(callback: RCTResponseSenderBlock) {
+        // RCTResponseSenderBlock has to be an array
+        callback([Kustomer.getUnreadCount(), nil])
+    }
+    
+    @objc(requestAuthorizationForPush)
+    func requestAuthorizationForPush() {
+        Kustomer.requestAuthorizationForPush()
+    }
     
     // MARK: Private Methods
     
@@ -83,3 +135,12 @@ public class KustomerReactNative: NSObject {
     }
 }
 
+/**
+ * https://developer.kustomer.com/chat-sdk/v2-iOS/docs/api-protocols-kuschatlistener
+ */
+class MyListener:KUSChatListener {
+  func onUnreadCountChange(count: Int) {
+    // post event to native iOS global listener
+    NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnUnreadCountChange), object: nil, userInfo: ["count": count])
+  }
+}

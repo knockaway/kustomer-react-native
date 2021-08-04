@@ -19,7 +19,7 @@ react-native wrapper for the native Kustomer SDKs V2
 ## Installation
 
 ```sh
-npm install kustomer-react-native
+npm install @knockaway/kustomer-react-native
 ```
 
 OR
@@ -60,7 +60,7 @@ _NOTE: Kustomer's V2 SDK is written in Kotlin._
 #### Cocoapods
 
 You can optionally add the following to your `Podfile` with a specific version 2.x.x:
-`pod 'Kustomer', :git => 'https://github.com/kustomer/customer-ios.git', :tag => '2.4.3'`
+`pod 'Kustomer', :git => 'https://github.com/kustomer/kustomer-ios.git', :tag => '2.4.3'`
 
 Otherwise it will default to install SDK version `2.4.3`
 
@@ -117,18 +117,124 @@ import UIKit
 
 - If your react-native project is somehow in `Swift`, you can follow the [Kustomer guide](https://developer.kustomer.com/chat-sdk/v2-iOS/docs/configuration#kustomeroptions-class-reference) for initializing the SDK
 
-### Android Setup
-
-TBA
-
-## Usage
+# Usage
 
 ```js
-import KustomerReactNative from 'kustomer-react-native';
+import KustomerReactNative from '@knockaway/kustomer-react-native';
 
-// ...
+// open the Kustomer default chat
+KustomerReactNative.show();
 ```
 
+## Methods
+### show()
+`KustomerReactNative.show()`
+<br />
+Opens Kustomer Chat UI
+
+**Parameters:**
+
+| Name     | Type     | Required | Description                                                 |
+| -------- | -------- | -------- | ----------------------------------------------------------- |
+| option   | String   | No       | See below                                                   |
+
+Possible option string:
+* `default` (default)
+* `onlyChat`
+* `onlyKnowledgeBase`
+
+#### iOS Only
+* `newChat` 
+* `activeChat` 
+* `chatHistory` 
+* `knowledgeBase`
+
+#### Android only
+* `chatAndKnowledgeBase`
+
+### isChatAvailable()
+`KustomerReactNative.isChatAvailable()`
+<br />
+Checks if Chat is available.
+**Returns:**
+Returns an array with `success` and `error` item: `[Boolean, String | Object]`
+
+**Example:**
+```JS
+const [isAvailable, error] = await KustomerReactNative.isChatAvailable();
+if (error) {
+  // do something with error
+} else {
+  console.log({isAvailable})
+}
+```
+
+### getUnreadCount()
+`KustomerReactNative.getUnreadCount(callback)`
+<br />
+get the most recent count of unread messages from the Kustomer servers as an Int.
+
+**Parameters:**
+
+| Name     | Type     | Required | Description                                                 |
+| -------- | -------- | -------- | ----------------------------------------------------------- |
+| callback | function | Yes      | Function which receive a Number                             |
+
+**Example:**
+```JS
+KustomerReactNative.getUnreadCount((count) => {
+  console.log({count})
+});
+```
+
+### addEventListener()
+`KustomerReactNative.addEventListener(type, handler)`
+<br />
+Attaches a listener to certain native Kustomer events
+
+**Parameters:**
+
+| Name     | Type     | Required | Description                                                 |
+| -------- | -------- | -------- | ----------------------------------------------------------- |
+| type     | string   | Yes      | See below                                                   |
+| handler  | function | Yes      | See below                                                   |
+
+Supported values: 
+* type: `onUnreadCountChange`
+  * handler: Function which receive a Number
+
+**Example:**
+```js
+const listener = KustomerReactNative.addEventListener('onUnreadCountChange', (count) => {
+  console.log({count})
+});
+```
+**IMPORTANT:**
+call `.remove()` on the listener object on cleanup to prevent memory leaks.
+
+`listener.remove()`
+
+**Example:**
+```JS
+KustomerReactNative.removeEventListener('onUnreadCountChange');
+```
+
+## Push Notification
+### iOS
+* Update your `KustomerConfig.swift` file with the following
+```swift
+@objc func didRegisterForRemoteNotifications(deviceToken: Data) {
+  Kustomer.didRegisterForRemoteNotifications(deviceToken: deviceToken)
+}
+  
+@objc func didFailToRegisterForRemoteNotifications(error: Error) {
+  Kustomer.didFailToRegisterForRemoteNotifications(error: error)
+}
+```
+- Following the guide [here](https://developer.kustomer.com/chat-sdk/v2-iOS/docs/push-notifications)
+ 
+
+### Android
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
