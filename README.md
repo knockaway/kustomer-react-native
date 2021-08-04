@@ -216,7 +216,12 @@ call `.remove()` on the listener object on cleanup to prevent memory leaks.
 
 **Example:**
 ```JS
-KustomerReactNative.removeEventListener('onUnreadCountChange');
+const listener = KustomerReactNative.addEventListener('onUnreadCountChange', (count) => {
+  console.log({count})
+});
+
+// remove the listener
+listener.remove()
 ```
 
 ## Push Notification
