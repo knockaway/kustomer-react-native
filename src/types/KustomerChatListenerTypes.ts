@@ -1,1 +1,3 @@
-export type KustomerChatListenerTypes = 'onUnreadCountChange';
+export type KustomerChatListenerTypes =
+  | 'onUnreadCountChange'
+  | 'onConversationCreated';

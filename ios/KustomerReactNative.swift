@@ -3,6 +3,7 @@ import KustomerChat
 import Foundation
 
 let RCTKustomerOnUnreadCountChange = "KustomerOnUnreadCountChange"
+let RCTKustomerOnConversationCreated = "KustomerOnConversationCreated"
 
 @objc(KustomerReactNative)
 public class KustomerReactNative: RCTEventEmitter {
@@ -14,10 +15,9 @@ public class KustomerReactNative: RCTEventEmitter {
      */
     public override func startObserving() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleOnUnreadCountChange), name: Notification.Name(rawValue: RCTKustomerOnUnreadCountChange), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleOnConversationCreated), name: Notification.Name(rawValue: RCTKustomerOnConversationCreated), object: nil)
         let listener = MyListener()
         chatListenerUid = Kustomer.chatProvider.addChatListener(listener)
-        
     }
     
     /**
@@ -27,12 +27,17 @@ public class KustomerReactNative: RCTEventEmitter {
         if (chatListenerUid != nil) {
             Kustomer.chatProvider.removeChatListener(chatListenerUid!)
         }
+        // no need to unregister our NotificationCenter observers if our app targets iOS 9.0+
+        // it will do it automatically
     }
     /**
      * Valid event names on the JS side
      */
     public override func supportedEvents() -> [String]! {
-        return ["onUnreadCountChange"]
+        return [
+            "onUnreadCountChange",
+            "onConversationCreated"
+        ]
     }
 
     @objc func handleOnUnreadCountChange(_ notification: NSNotification) {
@@ -42,8 +47,30 @@ public class KustomerReactNative: RCTEventEmitter {
             self.sendEvent(withName: "onUnreadCountChange", body: count)
         }
     }
+    @objc func handleOnConversationCreated(_ notification: NSNotification) {
+        
+        // TODO: remove - temporary for testing only
+        print("DeviceTokenString: \(String(describing: Kustomer.pushProvider.deviceTokenString))")
+        self.sendEvent(withName: "onConversationCreated", body: ["conversationId": notification.userInfo?["conversationId"], "deviceToken": Kustomer.pushProvider.deviceTokenString])
+
+        // send event to react native JS
+//        self.sendEvent(withName: "onConversationCreated", body: notification.userInfo)
+    }
     
     // MARK: Exposed Kustomer Methods
+    @objc func describeConversation(_ conversationId: NSString, attributes: Dictionary<String, Any>, resolve: @escaping RCTPromiseResolveBlock, reject:RCTPromiseRejectBlock) -> Void {
+        print(attributes)
+        Kustomer.chatProvider.describeConversation(conversationId: conversationId as String, attributes: attributes) { result in
+            switch result {
+            case .success:
+                resolve([true, nil])
+            case .failure(let error):
+                print("ERROR IN describeConversation")
+                print(error)
+                resolve([false, error])
+            }
+        }
+    }
     /**
     - parameters:
         - option: string value for Kustomer preferredView
@@ -139,8 +166,12 @@ public class KustomerReactNative: RCTEventEmitter {
  * https://developer.kustomer.com/chat-sdk/v2-iOS/docs/api-protocols-kuschatlistener
  */
 class MyListener:KUSChatListener {
-  func onUnreadCountChange(count: Int) {
-    // post event to native iOS global listener
-    NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnUnreadCountChange), object: nil, userInfo: ["count": count])
-  }
+    func onUnreadCountChange(count: Int) {
+        // post event to native iOS global listener
+        NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnUnreadCountChange), object: nil, userInfo: ["count": count])
+    }
+    
+    func onConversationCreated(conversationId: String, conversation: KUSConversation) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnConversationCreated), object: nil, userInfo: ["conversationId": conversationId, "conversation": conversation])
+    }
 }

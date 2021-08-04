@@ -12,6 +12,7 @@ const KustomerEventEmitter = new NativeEventEmitter(KustomerReactNative);
 // event names used to bridge events from native to JS
 const SUPPORTED_EVENT_NAMES: { [key: string]: KustomerChatListenerTypes } = {
   ON_UNREAD_COUNT_CHANGE: 'onUnreadCountChange',
+  ON_CONVERSATION_CREATED: 'onConversationCreated',
 };
 const supportedEventsArray = Object.values(SUPPORTED_EVENT_NAMES);
 
@@ -31,15 +32,24 @@ const addEventListener = (
     return null;
   }
 
-  if (type === SUPPORTED_EVENT_NAMES.ON_UNREAD_COUNT_CHANGE) {
-    return KustomerEventEmitter.addListener(
-      SUPPORTED_EVENT_NAMES.ON_UNREAD_COUNT_CHANGE,
-      (count) => {
-        handler(count);
-      }
-    );
+  switch (type) {
+    case SUPPORTED_EVENT_NAMES.ON_UNREAD_COUNT_CHANGE:
+      return KustomerEventEmitter.addListener(
+        SUPPORTED_EVENT_NAMES.ON_UNREAD_COUNT_CHANGE,
+        (count) => {
+          handler(count);
+        }
+      );
+    case SUPPORTED_EVENT_NAMES.ON_CONVERSATION_CREATED:
+      return KustomerEventEmitter.addListener(
+        SUPPORTED_EVENT_NAMES.ON_CONVERSATION_CREATED,
+        (data) => {
+          handler(data);
+        }
+      );
+    default:
+      return null;
   }
-  return null;
 };
 KustomerReactNative.addEventListener = addEventListener;
 
