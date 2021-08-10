@@ -14,7 +14,7 @@ react-native wrapper for the native Kustomer SDKs V2
 
 - React-Native 0.60+ for Autolinking
 - iOS: Minimum build target version of iOS 11
-- Xcode: Xcode 12
+- Xcode: Xcode 12+
 
 ## Installation
 
@@ -26,7 +26,7 @@ OR
 Add the following to your `package.json` dependencies
 
 ```json
-"kustomer-react-native": "git+https://github.com/knockaway/kustomer-react-native.git#master",
+"@knockaway/kustomer-react-native": "git+https://github.com/knockaway/kustomer-react-native.git#0.1.0",
 ```
 
 ### Android Setup
