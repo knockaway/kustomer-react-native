@@ -82,7 +82,7 @@ import UIKit
  */
 @objc public class KustomerConfig: NSObject {
 
-  @objc class func configure(withLaunchOptions launchOptions:NSDictionary) {
+  @objc class func configure(withLaunchOptions launchOptions:NSDictionary, delegate: UNUserNotificationCenterDelegate) {
 
     // customize your Options here
     // reference for Kustomer Options - https://developer.kustomer.com/chat-sdk/v2-iOS/docs/configuration#kustomeroptions-class-reference
@@ -95,6 +95,11 @@ import UIKit
     let apiKey = "<your api key here>"
 
     _ = Kustomer.configure(apiKey: apiKey, options: options, launchOptions: launchOptions as? [UIApplication.LaunchOptionsKey : Any])
+
+    // need to set this to properly consume all non-Kustomer Chat pushes
+    // this delegate does NOT receive any Kustomer chat pushes, rather it processes it elsewhere in their SDK
+    // NOTE: Set this if you have other types of push notifications set up
+    Kustomer.unUserNotificationCenterDelegate = delegate
   }
 }
 ```
@@ -226,6 +231,8 @@ listener.remove()
 
 ## Push Notification
 ### iOS
+> NOTE: Currently, this setup is with the assumption that the request for push notifications is triggered outside of Kustomer's SDK.
+> i.e https://github.com/zo0r/react-native-push-notification
 * Update your `KustomerConfig.swift` file with the following
 ```swift
 @objc func didRegisterForRemoteNotifications(deviceToken: Data) {
@@ -236,8 +243,28 @@ listener.remove()
   Kustomer.didFailToRegisterForRemoteNotifications(error: error)
 }
 ```
+
+* Then add the following code to your `AppDelegate.m`
+```objective-c
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+  // ...other code
+
+  [KustomerConfig didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+  // ...other code
+  [KustomerConfig didFailToRegisterForRemoteNotificationsWithError:error];
+}
+```
 - Following the guide [here](https://developer.kustomer.com/chat-sdk/v2-iOS/docs/push-notifications)
- 
+
+**TODO**
+* Kustomer request for push notifications method
+  
 
 ### Android
 ## Contributing
