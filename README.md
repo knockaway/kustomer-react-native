@@ -58,6 +58,7 @@ _NOTE: Kustomer's V2 SDK is written in Kotlin._
 ### iOS Setup
 
 #### Cocoapods
+Ensure that your `Podfile` targets `11.0` or above
 
 You can optionally add the following to your `Podfile` with a specific version 2.x.x:
 `pod 'Kustomer', :git => 'https://github.com/kustomer/kustomer-ios.git', :tag => '2.4.3'`
