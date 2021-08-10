@@ -114,7 +114,7 @@ import UIKit
 {
   // ... other stuff
 
-  [KustomerConfig configureWithLaunchOptions:launchOptions];
+  [KustomerConfig configureWithLaunchOptions:launchOptions delegate: self];
   return YES;
 }
 ```
