@@ -83,7 +83,7 @@ import UIKit
  */
 @objc public class KustomerConfig: NSObject {
 
-  @objc class func configure(withLaunchOptions launchOptions:NSDictionary, delegate: UNUserNotificationCenterDelegate) {
+  @objc class func configure(withLaunchOptions launchOptions:NSDictionary, delegate: UNUserNotificationCenterDelegate?) {
 
     // customize your Options here
     // reference for Kustomer Options - https://developer.kustomer.com/chat-sdk/v2-iOS/docs/configuration#kustomeroptions-class-reference
@@ -100,12 +100,15 @@ import UIKit
     // need to set this to properly consume all non-Kustomer Chat pushes
     // this delegate does NOT receive any Kustomer chat pushes, rather it processes it elsewhere in their SDK
     // NOTE: Set this if you have other types of push notifications set up
-    Kustomer.unUserNotificationCenterDelegate = delegate
+    if let myNotificationCenterDelegate = delegate {
+      Kustomer.unUserNotificationCenterDelegate = myNotificationCenterDelegate
+    }
   }
 }
 ```
 
 - You can then call this `configure` method inside `AppDelegate.m`
+  - **NOTE:** Pass `nil` to the second param `delegate` if you do not have/need push notifications set up
 
 ```objective-c
 #import "YourAppName-Swift.h"
@@ -114,7 +117,7 @@ import UIKit
 {
   // ... other stuff
 
-  [KustomerConfig configureWithLaunchOptions:launchOptions delegate: self];
+  [KustomerConfig configureWithLaunchOptions:launchOptions delegate: self]; // pass `nil` instead of `self` if you don't have push notification setup
   return YES;
 }
 ```
