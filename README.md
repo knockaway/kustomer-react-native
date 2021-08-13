@@ -13,9 +13,12 @@ react-native wrapper for the native Kustomer SDKs V2
 ## Requirements
 
 - React-Native 0.60+ for Autolinking
-- iOS: Minimum build target version of iOS 11
-- Xcode: Xcode 12+
-
+- iOS: 
+  - Minimum build target version of iOS 11
+  - Xcode: Xcode 12+
+- Android: 
+  - Minimum Sdk Version of 21
+  - Minimum Android Gradle Plugin `4.1.*` series
 ## Installation
 
 ```sh
@@ -36,6 +39,36 @@ Add the following to your `package.json` dependencies
 - Refer to [Kustomer's setup for gradle](https://developer.kustomer.com/chat-sdk/v2-Android/docs/installation#install-with-gradle)
 
 #### Initializing the SDK
+- Ensure that your `minSdkVersion` is 21+ and Build Gradle tool version to at `4.1.x` or higher
+```
+// build.gradle
+
+ext {
+    // other properties
+    minSdkVersion = 21
+}
+dependencies {
+    classpath('com.android.tools.build:gradle:4.1.0')
+}
+```
+
+
+- if you have attribute `android:allowBackup` in your `AndroidManifest.xml` add the following lines to `<application>` element at `AndroidManifest.xml`
+```xml
+<manifest 
+  // ..other attributes
+  xmlns:tools="http://schemas.android.com/tools" <-- new
+>
+  <application
+    // ..other attributes
+    android:allowBackup="false" <-- if you have this line, add the property above and below
+    tools:replace="android:allowBackup" <-- new
+  >
+
+  </application>
+</manifest>
+
+```
 
 - Refer to [Kustomer's instructions on how to initialize the SDK](https://developer.kustomer.com/chat-sdk/v2-Android/docs/installation#initialize-the-chat-android-sdk). Add this initilization code to your `onCreate` method inside the `MainApplication` file.
 

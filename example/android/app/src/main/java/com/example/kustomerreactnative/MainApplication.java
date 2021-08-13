@@ -11,6 +11,10 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.kustomerreactnative.KustomerReactNativePackage;
+import android.util.Log;
+
+import com.kustomer.ui.Kustomer;
+import com.kustomer.ui.KustomerOptions;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -26,8 +30,6 @@ public class MainApplication extends Application implements ReactApplication {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for KustomerReactNativeExample:
-          // packages.add(new MyReactNativePackage());
-          packages.add(new KustomerReactNativePackage());
           return packages;
         }
 
@@ -47,6 +49,10 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager()); // Remove this line if you don't want Flipper enabled
+    Kustomer.Companion.init(this, "KUSTOMER_API_SDK_KEY", null, result -> {
+      Log.i(getClass().getSimpleName(),"Kustomer is initialized: " + result.getDataOrNull());
+      return null;
+    });
   }
 
   /**
