@@ -69,7 +69,9 @@ public class KustomerReactNativeModule extends ReactContextBaseJavaModule {
   @Override
   public void onCatalystInstanceDestroy() {
     super.onCatalystInstanceDestroy();
-    Kustomer.Companion.getInstance().observeUnreadCount().removeObserver(unreadCountObserver);
+    this.mainHandler.post(() -> {
+      Kustomer.Companion.getInstance().observeUnreadCount().removeObserver(unreadCountObserver);
+    });
   }
 
   @Override
