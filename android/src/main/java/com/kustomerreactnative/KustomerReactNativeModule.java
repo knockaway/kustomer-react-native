@@ -31,9 +31,12 @@ public class KustomerReactNativeModule extends ReactContextBaseJavaModule {
   public static final String NAME = "KustomerReactNative";
   private static ReactApplicationContext reactContext;
   private static android.os.Handler mainHandler;
+  private Integer unreadCount = 0;
+
   private final Observer<Integer> unreadCountObserver = new Observer<Integer>() {
     @Override
     public void onChanged(@Nullable final Integer count) {
+      unreadCount = count;
       // send data over to JS side
       ModuleHelper.sendEvent(reactContext, "onUnreadCountChange", count);
     }
@@ -78,61 +81,26 @@ public class KustomerReactNativeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void getUnreadCount(Callback callback) {
-
-    /**
-     * This is some big brain hack:
-     * - Kustomer does not expose a method to getUnreadCount (unlike iOS)
-     *    So we are using LiveData and observing it once and returning that value
-     *
-     * - The Observer needs to be removed right after the first invocation otherwise we would call 'callback' twice in 1 call. Which will crash the app
-     *   we also only want the first value because the bridged method is a getter and not a listener
-     */
-    final Observer<Integer> unreadCountOnceObserver = new Observer<Integer>() {
-      @Override
-      public void onChanged(@Nullable final Integer count) {
-        callback.invoke(count);
-
-        // remove itself as observer after the first callback to prevent future calls/errors
-        Kustomer.Companion.getInstance().observeUnreadCount().removeObserver(this);
-      }
-    };
-
-    Runnable myRunnable = new Runnable() {
-      @Override
-      public void run() {
-        // this liveData observe can only be called on the main thread
-        Kustomer.Companion.getInstance().observeUnreadCount().observeForever(unreadCountOnceObserver);
-      }
-    };
-    mainHandler.post(myRunnable);
-
+    // return through callback for consistency with iOS
+    callback.invoke(this.unreadCount);
   }
 
 
   @ReactMethod
   public void isChatAvailable(Promise promise) {
-    WritableArray mutableArray = Arguments.createArray();
-
     try {
       Kustomer.Companion.getInstance().isChatAvailable(kusResult -> {
         // Resolve with [response, null]
-        mutableArray.pushBoolean(
-          kusResult.successOr(KusChatAvailability.KUS_OFFLINE) == KusChatAvailability.KUS_ONLINE
-        );
-        mutableArray.pushNull();
+        WritableArray array = ModuleHelper.constructPromiseResponse(kusResult.successOr(KusChatAvailability.KUS_OFFLINE) == KusChatAvailability.KUS_ONLINE, null);
 
-        promise.resolve(mutableArray);
+        promise.resolve(array);
 
         return Unit.INSTANCE;
       });
     } catch (Exception ex) {
       // Resolve with [false, exception]
-      mutableArray.pushBoolean(false);
-      mutableArray.pushString(
-        ex.getMessage()
-      );
-
-      promise.resolve(mutableArray);
+      WritableArray array = ModuleHelper.constructPromiseResponse(false, ex.getMessage());
+      promise.resolve(array);
     }
   }
 
