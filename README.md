@@ -29,7 +29,7 @@ OR
 Add the following to your `package.json` dependencies
 
 ```json
-"@knockaway/kustomer-react-native": "git+https://github.com/knockaway/kustomer-react-native.git#0.1.0",
+"@knockaway/kustomer-react-native": "git+https://github.com/knockaway/kustomer-react-native.git#0.2.1",
 ```
 
 ### Android Setup
