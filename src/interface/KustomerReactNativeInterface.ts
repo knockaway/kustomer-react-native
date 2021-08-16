@@ -3,6 +3,7 @@ import type {
   KustomerDisplayMode,
   PromiseResult,
   KustomerChatListenerTypes,
+  ChatListenerCallback,
 } from '../types';
 
 export interface KustomerReactNativeInterface {
@@ -42,8 +43,8 @@ export interface KustomerReactNativeInterface {
    *
    * @returns {EmitterSubscription}
    */
-  addEventListener(
-    type: KustomerChatListenerTypes,
-    handler: Function
+  addEventListener<T extends KustomerChatListenerTypes>(
+    type: T,
+    handler: ChatListenerCallback<T>
   ): EmitterSubscription | null;
 }

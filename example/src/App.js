@@ -60,12 +60,20 @@ const useListenerExamples = () => {
         setUnreadCount(count);
       }
     );
+    const onConvoCreated = KustomerReactNative.addEventListener(
+      'onConversationCreated',
+      ({ conversationId, brandId }) => {
+        console.log('----- OnConversationCreated ----');
+        console.log({ brandId, conversationId });
+      }
+    );
     // gets the current count of unread messages once on init
     KustomerReactNative.getUnreadCount((count) => {
       setUnreadCount(count);
     });
     return () => {
       unreadCountListener.remove();
+      onConvoCreated.remove();
     };
   }, []);
 

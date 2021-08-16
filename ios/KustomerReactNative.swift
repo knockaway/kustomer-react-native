@@ -3,6 +3,7 @@ import KustomerChat
 import Foundation
 
 let RCTKustomerOnUnreadCountChange = "KustomerOnUnreadCountChange"
+let RCTKustomerOnConversationCreated = "KustomerOnConversationCreated"
 
 @objc(KustomerReactNative)
 public class KustomerReactNative: RCTEventEmitter {
@@ -14,6 +15,7 @@ public class KustomerReactNative: RCTEventEmitter {
      */
     public override func startObserving() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleOnUnreadCountChange), name: Notification.Name(rawValue: RCTKustomerOnUnreadCountChange), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleOnConversationCreated), name: Notification.Name(rawValue: RCTKustomerOnConversationCreated), object: nil)
         
         let listener = MyListener()
         chatListenerUid = Kustomer.chatProvider.addChatListener(listener)
@@ -32,7 +34,7 @@ public class KustomerReactNative: RCTEventEmitter {
      * Valid event names on the JS side
      */
     public override func supportedEvents() -> [String]! {
-        return ["onUnreadCountChange"]
+        return ["onUnreadCountChange", "onConversationCreated"]
     }
 
     @objc func handleOnUnreadCountChange(_ notification: NSNotification) {
@@ -40,6 +42,15 @@ public class KustomerReactNative: RCTEventEmitter {
         if let count = notification.userInfo?["count"] as? Int {
             // send event to react native JS
             self.sendEvent(withName: "onUnreadCountChange", body: count)
+        }
+    }
+    
+    @objc func handleOnConversationCreated(_ notification: NSNotification) {
+        // safe unwrap userInfo object
+        if let convoId = notification.userInfo?["conversationId"] as? NSString {
+            // send event to react native JS
+            // JS return obj: { conversationId, brandId }
+            self.sendEvent(withName: "onConversationCreated", body: ["conversationId": convoId, "brandId": notification.userInfo?["brandId"]])
         }
     }
     
@@ -139,8 +150,16 @@ public class KustomerReactNative: RCTEventEmitter {
  * https://developer.kustomer.com/chat-sdk/v2-iOS/docs/api-protocols-kuschatlistener
  */
 class MyListener:KUSChatListener {
-  func onUnreadCountChange(count: Int) {
-    // post event to native iOS global listener
-    NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnUnreadCountChange), object: nil, userInfo: ["count": count])
-  }
+    func onUnreadCountChange(count: Int) {
+        // post event to native iOS global listener
+        NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnUnreadCountChange), object: nil, userInfo: ["count": count])
+    }
+
+    func onConversationCreated(conversationId: String, conversation: KUSConversation) {
+        print("BRAND ID: \(conversation.brandId)")
+        NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnConversationCreated), object: nil, userInfo: [
+            "conversationId": conversationId,
+            "brandId": conversation.brandId as Any,
+        ])
+    }
 }

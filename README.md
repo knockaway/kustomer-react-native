@@ -244,6 +244,8 @@ Attaches a listener to certain native Kustomer events
 Supported values: 
 * type: `onUnreadCountChange`
   * handler: Function which receive a Number
+* type: `onConversationCreated`
+  * handler: Function which receive an Object: { conversationId, brandId }
 
 **Example:**
 ```js
