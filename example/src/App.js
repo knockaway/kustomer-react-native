@@ -69,7 +69,7 @@ const useListenerExamples = () => {
     );
     const onConvoEnded = KustomerReactNative.addEventListener(
       'onConversationEnded',
-      (object) => {
+      ({ brandId, conversationId }) => {
         console.log('----- OnConversationEnded ----');
         console.log({ brandId, conversationId });
       }
