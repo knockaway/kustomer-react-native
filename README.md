@@ -246,6 +246,8 @@ Supported values:
   * handler: Function which receive a Number
 * type: `onConversationCreated`
   * handler: Function which receive an Object: { conversationId, brandId }
+* type: `onConversationEnded`
+  * handler: Function which receive an Object: { conversationId, brandId }
 
 **Example:**
 ```js

@@ -4,6 +4,7 @@ import Foundation
 
 let RCTKustomerOnUnreadCountChange = "KustomerOnUnreadCountChange"
 let RCTKustomerOnConversationCreated = "KustomerOnConversationCreated"
+let RCTKustomerOnConversationEnded = "KustomerOnConversationEnded"
 
 @objc(KustomerReactNative)
 public class KustomerReactNative: RCTEventEmitter {
@@ -16,6 +17,7 @@ public class KustomerReactNative: RCTEventEmitter {
     public override func startObserving() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleOnUnreadCountChange), name: Notification.Name(rawValue: RCTKustomerOnUnreadCountChange), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleOnConversationCreated), name: Notification.Name(rawValue: RCTKustomerOnConversationCreated), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleOnConversationEnded), name: Notification.Name(rawValue: RCTKustomerOnConversationEnded), object: nil)
         
         let listener = MyListener()
         chatListenerUid = Kustomer.chatProvider.addChatListener(listener)
@@ -34,7 +36,7 @@ public class KustomerReactNative: RCTEventEmitter {
      * Valid event names on the JS side
      */
     public override func supportedEvents() -> [String]! {
-        return ["onUnreadCountChange", "onConversationCreated"]
+        return ["onUnreadCountChange", "onConversationCreated", "onConversationEnded"]
     }
 
     @objc func handleOnUnreadCountChange(_ notification: NSNotification) {
@@ -51,6 +53,15 @@ public class KustomerReactNative: RCTEventEmitter {
             // send event to react native JS
             // JS return obj: { conversationId, brandId }
             self.sendEvent(withName: "onConversationCreated", body: ["conversationId": convoId, "brandId": notification.userInfo?["brandId"]])
+        }
+    }
+    
+    @objc func handleOnConversationEnded(_ notification: NSNotification) {
+        // safe unwrap userInfo object
+        if let convoId = notification.userInfo?["conversationId"] as? NSString {
+            // send event to react native JS
+            // JS return obj: { conversationId, brandId }
+            self.sendEvent(withName: "onConversationEnded", body: ["conversationId": convoId, "brandId": notification.userInfo?["brandId"]])
         }
     }
     
@@ -154,10 +165,20 @@ class MyListener:KUSChatListener {
         // post event to native iOS global listener
         NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnUnreadCountChange), object: nil, userInfo: ["count": count])
     }
+    
+    
 
     func onConversationCreated(conversationId: String, conversation: KUSConversation) {
         print("BRAND ID: \(conversation.brandId)")
         NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnConversationCreated), object: nil, userInfo: [
+            "conversationId": conversationId,
+            "brandId": conversation.brandId as Any,
+        ])
+    }
+
+    func onConversationEnded(conversationId: String, conversation: KUSConversation) {
+        print("BRAND ID: \(conversation.brandId)")
+        NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnConversationEnded), object: nil, userInfo: [
             "conversationId": conversationId,
             "brandId": conversation.brandId as Any,
         ])

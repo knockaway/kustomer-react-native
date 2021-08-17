@@ -63,6 +63,13 @@ const addEventListener = <T extends KustomerChatListenerTypes>(
           handler(params);
         }
       );
+    case SUPPORTED_EVENT_NAMES.ON_CONVERSATION_ENDED:
+      return KustomerEventEmitter.addListener(
+        SUPPORTED_EVENT_NAMES.ON_CONVERSATION_ENDED,
+        (params) => {
+          handler(params);
+        }
+      );
     default:
       return null;
   }

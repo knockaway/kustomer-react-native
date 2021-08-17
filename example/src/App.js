@@ -67,6 +67,13 @@ const useListenerExamples = () => {
         console.log({ brandId, conversationId });
       }
     );
+    const onConvoEnded = KustomerReactNative.addEventListener(
+      'onConversationEnded',
+      (object) => {
+        console.log('----- OnConversationEnded ----');
+        console.log({ brandId, conversationId });
+      }
+    );
     // gets the current count of unread messages once on init
     KustomerReactNative.getUnreadCount((count) => {
       setUnreadCount(count);
@@ -74,6 +81,7 @@ const useListenerExamples = () => {
     return () => {
       unreadCountListener.remove();
       onConvoCreated.remove();
+      onConvoEnded.remove();
     };
   }, []);
 
