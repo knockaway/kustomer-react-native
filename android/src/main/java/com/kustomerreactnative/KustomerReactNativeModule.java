@@ -29,7 +29,7 @@ import kotlin.Unit;
 @ReactModule(name = KustomerReactNativeModule.NAME)
 public class KustomerReactNativeModule extends ReactContextBaseJavaModule {
   public static final String NAME = "KustomerReactNative";
-  private static ReactApplicationContext reactContext;
+  private ReactApplicationContext reactContext;
   private static android.os.Handler mainHandler;
   private Integer unreadCount = 0;
 
@@ -50,6 +50,9 @@ public class KustomerReactNativeModule extends ReactContextBaseJavaModule {
   @Override
   public void initialize() {
     super.initialize();
+    MyKUSChatListener listener = new MyKUSChatListener(this.reactContext);
+    Kustomer.Companion.getInstance().addChatListener(listener);
+
     this.mainHandler = new android.os.Handler(Looper.getMainLooper());
 
     // mainHandler.post() will execute the lambda on the main thread

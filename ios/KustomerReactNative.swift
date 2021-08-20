@@ -169,7 +169,6 @@ class MyListener:KUSChatListener {
     
 
     func onConversationCreated(conversationId: String, conversation: KUSConversation) {
-        print("BRAND ID: \(conversation.brandId)")
         NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnConversationCreated), object: nil, userInfo: [
             "conversationId": conversationId,
             "brandId": conversation.brandId as Any,
@@ -177,7 +176,6 @@ class MyListener:KUSChatListener {
     }
 
     func onConversationEnded(conversationId: String, conversation: KUSConversation) {
-        print("BRAND ID: \(conversation.brandId)")
         NotificationCenter.default.post(name: Notification.Name(rawValue: RCTKustomerOnConversationEnded), object: nil, userInfo: [
             "conversationId": conversationId,
             "brandId": conversation.brandId as Any,
