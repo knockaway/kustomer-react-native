@@ -105,7 +105,7 @@ public class KustomerReactNative: RCTEventEmitter {
     }
     
     @objc(isChatAvailable:withRejecter:)
-    func isChatAvailable(resolve: @escaping RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
+    func isChatAvailable(_ resolve: @escaping RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
         // https://developer.kustomer.com/chat-sdk/v2-iOS/docs/api-classes-chatprovider
         let provider = ChatProvider.shared
         let available: Bool? = provider.isChatAvailable()
@@ -122,7 +122,7 @@ public class KustomerReactNative: RCTEventEmitter {
     }
     
     @objc(getUnreadCount:)
-    func getUnreadCount(callback: RCTResponseSenderBlock) {
+    func getUnreadCount(_ callback: RCTResponseSenderBlock) {
         // RCTResponseSenderBlock has to be an array
         callback([Kustomer.getUnreadCount(), nil])
     }
