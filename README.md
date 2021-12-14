@@ -169,6 +169,11 @@ KustomerReactNative.show();
 ```
 
 ## Methods
+* [show](#show)
+* [isChatAvailable](#isChatAvailable)
+* [getUnreadCount](#getUnreadCount)
+* [addEventListener](#addEventListener)
+
 ### show()
 `KustomerReactNative.show()`
 <br />
@@ -304,10 +309,9 @@ listener.remove()
 - Following the guide [here](https://developer.kustomer.com/chat-sdk/v2-iOS/docs/push-notifications)
 
 **TODO**
-* Kustomer request for push notifications method
+* [ ] Other Kustomer native methods
   
 
-### Android
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.

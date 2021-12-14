@@ -28,6 +28,9 @@
     "prepare": "bob build",
     "release": "release-it",
     "install:example": "cd example && npm install",
+    "example:start": "cd example && npm start",
+    "example:ios": "cd example && npm run ios",
+    "example:android": "cd example && npm run android",
     "pods": "cd example/ios && pod install --silent",
     "bootstrap": "npm install && npm run install:example && npm run pods"
   },
