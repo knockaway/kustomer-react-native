@@ -55,6 +55,6 @@ repositories {
 
 dependencies {
     //noinspection GradleDynamicVersion
-    implementation 'com.kustomer.chat:ui:2.7.1'
+    implementation 'com.kustomer.chat:ui:2.9.2'
     implementation "com.facebook.react:react-native:+"  // From node_modules
 }

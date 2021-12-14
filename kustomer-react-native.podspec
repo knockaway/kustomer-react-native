@@ -17,6 +17,6 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency 'React'
-  s.dependency 'KustomerChat', '>= 2.4.4'
+  s.dependency 'KustomerChat', '>= 2.5.2'
 
 end
