@@ -37,7 +37,8 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "Kustomer"
   ],
   "repository": "https://github.com/knockaway/kustomer-react-native",
   "author": "knockaway <dyo@knock.com> (https://github.com/knockaway)",
@@ -97,7 +98,7 @@
       "tagName": "${version}"
     },
     "npm": {
-      "publish": false
+      "publish": true
     },
     "github": {
       "release": true
