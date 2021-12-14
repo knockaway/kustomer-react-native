@@ -312,6 +312,9 @@ listener.remove()
 * [ ] Other Kustomer native methods
   
 
+### Android
+* see https://developer.kustomer.com/chat-sdk/v2-Android/docs/push-notificatons-with-fcm
+  
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
