@@ -309,7 +309,7 @@ listener.remove()
 - Following the guide [here](https://developer.kustomer.com/chat-sdk/v2-iOS/docs/push-notifications)
 
 **TODO**
-* [ ] Other Kustomer native methods
+* Kustomer request for push notifications method
   
 
 ### Android
