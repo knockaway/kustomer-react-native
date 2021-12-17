@@ -1,7 +1,6 @@
 {
   "name": "@knockaway/kustomer-react-native",
   "version": "0.3.1",
-  "private": true,
   "description": "react-native wrapper for the native Kustomer SDKs",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -28,13 +27,17 @@
     "prepare": "bob build",
     "release": "release-it",
     "install:example": "cd example && npm install",
+    "example:start": "cd example && npm start",
+    "example:ios": "cd example && npm run ios",
+    "example:android": "cd example && npm run android",
     "pods": "cd example/ios && pod install --silent",
     "bootstrap": "npm install && npm run install:example && npm run pods"
   },
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "Kustomer"
   ],
   "repository": "https://github.com/knockaway/kustomer-react-native",
   "author": "knockaway <dyo@knock.com> (https://github.com/knockaway)",
@@ -94,7 +97,7 @@
       "tagName": "${version}"
     },
     "npm": {
-      "publish": false
+      "publish": true
     },
     "github": {
       "release": true

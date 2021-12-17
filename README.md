@@ -7,7 +7,9 @@ react-native wrapper for the native Kustomer SDKs V2
 - run `npm run bootstrap`
 - Navigate to the `/example` folder
 - **For iOS:**
-  - Modify `KustomerConfig.swift` and replace add in your Kustomer API key in place of `<api key>`
+  - Modify `KustomerConfig.swift` and add in your Kustomer API key in place of `<api key>`
+- **For Android:**
+  - Modify `MainApplication.java` and add in your Kustomer API key in place of `KUSTOMER_API_SDK_KEY`
 - run `npm run ios` or `npm run android`
 
 ## Requirements
@@ -169,6 +171,11 @@ KustomerReactNative.show();
 ```
 
 ## Methods
+* [show](#show)
+* [isChatAvailable](#isChatAvailable)
+* [getUnreadCount](#getUnreadCount)
+* [addEventListener](#addEventListener)
+
 ### show()
 `KustomerReactNative.show()`
 <br />
@@ -308,6 +315,8 @@ listener.remove()
   
 
 ### Android
+* see https://developer.kustomer.com/chat-sdk/v2-Android/docs/push-notificatons-with-fcm
+  
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
